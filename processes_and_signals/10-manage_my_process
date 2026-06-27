@@ -1,0 +1,41 @@
+#!/usr/bin/env bash
+# Simple manager to start/stop/restart the managed process (11-manage_my_process)
+pidfile=/var/run/my_process.pid
+if [ ! -w "$(dirname "$pidfile")" ]; then
+  pidfile=/tmp/my_process.pid
+fi
+
+cmd() {
+  exec "$(dirname "$0")/11-manage_my_process" "$@"
+}
+
+case "$1" in
+  start)
+    if [ -f "$pidfile" ] && kill -0 "$(cat "$pidfile")" 2>/dev/null; then
+      echo "my_process already running"
+      exit 0
+    fi
+    nohup "$(dirname "$0")/11-manage_my_process" >/dev/null 2>&1 &
+    sleep 0.1
+    echo $! > "$pidfile"
+    echo "my_process started (pid $(cat "$pidfile"))"
+    ;;
+  stop)
+    if [ -f "$pidfile" ]; then
+      pid=$(cat "$pidfile")
+      kill "$pid" && echo "Stopped $pid"
+      rm -f "$pidfile"
+    else
+      echo "my_process not running"
+    fi
+    ;;
+  restart)
+    "$0" stop
+    sleep 0.2
+    "$0" start
+    ;;
+  *)
+    echo "Usage: $0 {start|stop|restart}"
+    exit 2
+    ;;
+esac

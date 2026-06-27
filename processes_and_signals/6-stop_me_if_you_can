@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+# Send SIGTERM to the 4-to_infinity_and_beyond process (alternative stop)
+
+pid=$(pgrep -f '4-to_infinity_and_beyond' | head -n1)
+if [ -n "$pid" ]; then
+  kill -TERM "$pid" && echo "Sent TERM to $pid"
+else
+  echo "No 4-to_infinity_and_beyond process found"
+fi

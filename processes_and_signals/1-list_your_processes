@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+# list processes for all users in a user-oriented format
+
+ps -ef

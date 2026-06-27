@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+# An "invincible" process that ignores SIGTERM
+
+trap '' TERM
+while true; do
+  echo "I am invincible!!!"
+  sleep 2
+done

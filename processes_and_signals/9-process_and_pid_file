@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+# Creates /var/run/myscript.pid with its PID and handles signals
+
+pidfile=/var/run/myscript.pid
+
+# ensure we can write to /var/run; if not, fallback to /tmp
+if [ ! -w "$(dirname "$pidfile")" ]; then
+  pidfile=/tmp/myscript.pid
+fi
+
+echo $$ > "$pidfile"
+
+trap 'echo "Y U NO LOVE ME?"' SIGINT
+trap 'echo "I hate the kill command"; rm -f "$pidfile"; exit' SIGTERM
+trap 'rm -f "$pidfile"; exit' SIGQUIT
+
+while true; do
+  echo "To infinity and beyond"
+  sleep 2
+done

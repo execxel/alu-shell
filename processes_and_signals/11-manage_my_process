@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+# Lightweight long-running process that writes its pid to /var/run/my_process.pid
+pidfile=/var/run/my_process.pid
+if [ ! -w "$(dirname "$pidfile")" ]; then
+  pidfile=/tmp/my_process.pid
+fi
+
+echo $$ > "$pidfile"
+trap 'rm -f "$pidfile"; exit' SIGTERM SIGQUIT
+
+while true; do
+  echo "I am alive!"
+  sleep 2
+done

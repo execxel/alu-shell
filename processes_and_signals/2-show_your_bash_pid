@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+# show lines for bash processes (PID and command)
+
+ps -C bash -o pid,cmd
