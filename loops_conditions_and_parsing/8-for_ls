@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+# Lists the current directory, showing only the part of each name after the first dash
+
+for file in *
+do
+    echo "$file" | cut -d "-" -f2-
+done
